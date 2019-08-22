@@ -1,6 +1,6 @@
 {
   "name": "mongodb-cli",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "The human way to mongodump and mongorestore your MongoDB Atlas cluster",
   "main": "lib/index.js",
   "scripts": {

@@ -1,5 +1,8 @@
 import { exec } from 'child_process'
 import { Config } from './interfaces/config';
+const fs = require("fs");
+
+
 
 /**
  * A class to handle the MongoDB operations
@@ -76,11 +79,20 @@ export default class MongoHandler {
     /**
      * Restore the database
      */
-    public restoreDatabase(): Promise<number | void> {
+    public async restoreDatabase(): Promise<void> {
         if (!this.config.input_dir) {
             throw 'Missing input_dir configuration';
         }
-        return this.execute('mongorestore')
+
+        const root_dir = this.config.input_dir;
+
+        const items = fs.readdirSync(root_dir);
+
+        for(let i = 0; i < items.length; i++) {
+            this.config.input_dir = `${root_dir}/${items[i]}`
+            this.config.database = items[i];
+            await this.execute('mongorestore')
+        }        
     }
 
     /**

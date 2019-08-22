@@ -7,6 +7,9 @@
     "prepare": "tsc",
     "test": "mocha -r ts-node/register test/**/*.spec.ts --reporter mochawesome  --reporter-options reportDir=report --exit"
   },
+  "bin": {
+    "mongodb-cli": "lib/cli/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/lukebellamy053/mongodb-cli"
@@ -32,5 +35,7 @@
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "command-line-args": "^5.1.1"
+  }
 }

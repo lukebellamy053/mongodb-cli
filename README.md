@@ -1,36 +1,32 @@
-# MongoDB Atlas Backup [![npm version](https://badge.fury.io/js/mongodb-atlas-backup.svg)](https://badge.fury.io/js/mongodb-atlas-backup)
+# MongoDB Atlas Backup [![npm version](https://badge.fury.io/js/mongodb-cli.svg)](https://badge.fury.io/js/mongodb-cli)
+[![CircleCI](https://circleci.com/gh/lukebellamy053/mongodb-cli.svg?style=svg)](https://circleci.com/gh/lukebellamy053/mongodb-cli)
 
-#### The human way to `mongodump` and `mongorestore` your MongoDB Atlas cluster
+#### The easy way to restore and dump from mongodb databases
 
 ## Install
 ```sh
-npm install --save mongodb-atlas-backup
+npm install --save mongodb-cli
 ```
 
 ## Setup & Use
 ```js
-import MongoBackup from 'mongodb-atlas-backup'
+import MongoHandler from 'mongodb-cli'
 
 // Create an instance of the database connection
-const backup = new MongoBackup({
-    user: 'userWithMightyAccess',
-    password: '<VERY SECRET PASSWORD>',
-    replicaSet: 'Cluster0-shard-0',
-    nodes: [
-        'cluster0-shard-00-00-cbei2.mongodb.net:27017',
-        'cluster0-shard-00-01-cbei2.mongodb.net:27017',
-        'cluster0-shard-00-02-cbei2.mongodb.net:27017'
-    ]
+const process = new MongoHandler({
+    ssl?: boolean; // Should the connection use SSL?
+    auth?: {user: string, password: string, auth_db?: string} // The authentication information
+    host?: string | {repl_set: string, nodes: Array<string>}; // A host DSN or connection object
+    database?: string; // The database to backup / restore
+    output_dir?: string; // Where should the backup be saved to
+    input_dir?: string; // The directory to restore from
 })
 
 // Dump your cluster
-backup.dump()
+await backup.dumpDatabase()
 
 // Restore data to your cluster
-backup.restore()
+await backup.restoreDatabase()
 ```
-## Possible improvements
-I made this out of basic needs for one of my projects. Feel free to send pull requests if you came up with some improvement though. These are some of the ideas that could be implemented:
-- add support for dumping/restoring specific `database` (just need to add a pair of command line arguments)
-- extract connection specs from existing Mongo/ose connection
-- add support for non-Unix OS (aka Windows)
+## Information
+This project is forked from kysely/mongodb-atlas-backup however the underlying code has been changed to use typescript and to allow for more flexibility with the configurations. 

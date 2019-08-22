@@ -19,7 +19,7 @@ export default class MongoHandler {
     /**
      * Get the command line arguments for the request
      */
-    private cmdLineArguments(): Array<string> {
+    private cmdLineArguments(command: 'mongodump' | 'mongorestore'): Array<string> {
 
         const params: Array<string> = [];
 
@@ -50,11 +50,11 @@ export default class MongoHandler {
             }
         }
 
-        if(this.config.output_dir) {
+        if(command == 'mongodump' && this.config.output_dir) {
             params.push('--out',this.config.output_dir);
         }
 
-        if(this.config.input_dir) {
+        if(command == 'mongorestore' && this.config.input_dir) {
             params.push('--dir', this.config.input_dir);
         }
 
@@ -89,7 +89,7 @@ export default class MongoHandler {
      */
     private execute(command: 'mongodump' | 'mongorestore'): Promise<number | void> {
         // Create the full command
-        const running_command = `${command} ${this.cmdLineArguments().join(' ')}`;
+        const running_command = `${command} ${this.cmdLineArguments(command).join(' ')}`;
         console.log(running_command);
         // Create the process and return it
         return processHandler(running_command);
